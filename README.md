@@ -7,10 +7,6 @@
 
     docker
 
-### env
-
-    mac
-
 ```
 sh eos.sh
 
