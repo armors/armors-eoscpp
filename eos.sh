@@ -14,6 +14,7 @@ app_basic_name=smart-contract
 app="$developer_name-$app_basic_name"
 
 eosio_image=eosio/eos-dev:v1.1.1
+#eosio_image=eosio/eos-dev:v1.2.3
 
 # container
 eosio_container=$app-eosio
