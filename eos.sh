@@ -96,10 +96,13 @@ cat <<EOF
 
         open_unlock_wallet
         deploy
+
+        key_create
+        wallet_import
 EOF
 }
 
 action=${1:-help}
-ALL_COMMANDS="run restart clean cpp cli deploy key_create send_cmd_to_eos_container open_unlock_wallet"
+ALL_COMMANDS="run restart clean cpp cli deploy key_create send_cmd_to_eos_container open_unlock_wallet key_create wallet_import"
 list_contains ALL_COMMANDS "$action" || action=help
 $action "$@"

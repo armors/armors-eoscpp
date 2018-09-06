@@ -53,13 +53,15 @@ function cpp()
 function cli()
 {
     local cmd=$2
-    run_cmd "docker exec -it $eosio_container bash -c '/opt/eosio/bin/cleos -u http://0.0.0.0:8888 --wallet-url http://0.0.0.0:8888 $cmd'"
+    run_cmd "docker exec -it $eosio_container bash -c \"/opt/eosio/bin/cleos -u http://0.0.0.0:8888 --wallet-url http://0.0.0.0:8888 $cmd\""
 }
 
 _init_contract()
 {
-  _open_un_lock_wallet
-  run_cmd "sh eos.sh cli 'set contract eosio $project_docker_persistent_dir/contracts/eosio.bios -x 1000s -p eosio@active'"
-  #_open_un_lock_wallet
-  #run_cmd "sh eos.sh cli 'set contract dev.token $project_docker_persistent_dir/contracts/eosio.token -x 1000s -p dev.token@active'"
+    _open_un_lock_wallet
+    run_cmd "sh eos.sh cli 'set contract eosio.token $project_docker_persistent_dir/contracts/eosio.token -x 1000s -p eosio.token@active'"
+    _open_un_lock_wallet
+    run_cmd "sh eos.sh cli 'set contract eosio.msig $project_docker_persistent_dir/contracts/eosio.msig -x 1000s -p eosio.msig@active'"
+    _open_un_lock_wallet
+    run_cmd "sh eos.sh cli 'set contract eosio $project_docker_persistent_dir/contracts/eosio.bios -x 1000s -p eosio@active'"
 }

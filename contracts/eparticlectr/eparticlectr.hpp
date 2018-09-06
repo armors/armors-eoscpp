@@ -233,7 +233,7 @@ private:
     // Internal struct for history of success rewards and reject slashes
     // slashes will be done immediately at finalize(). Rewards will be done at 30min periods
     // @abi table
-    struct rewardhistory {
+    struct rewardhistor {
         uint64_t id;
         account_name user;
         uint64_t amount; // slash or reward amount
@@ -310,10 +310,10 @@ private:
 
     // rewards history table
     // @abi table
-    typedef eosio::multi_index<N(rewardstbl), rewardhistory,
-        indexed_by< N(byuser), const_mem_fun<rewardhistory, account_name, &rewardhistory::get_user>>,
-        indexed_by< N(byfinalper), const_mem_fun<rewardhistory, uint64_t, &rewardhistory::get_finalize_period >>,
-        indexed_by< N(byproposal), const_mem_fun<rewardhistory, uint64_t, &rewardhistory::get_proposal >>
+    typedef eosio::multi_index<N(rewardstbl), rewardhistor,
+        indexed_by< N(byuser), const_mem_fun<rewardhistor, account_name, &rewardhistor::get_user>>,
+        indexed_by< N(byfinalper), const_mem_fun<rewardhistor, uint64_t, &rewardhistor::get_finalize_period >>,
+        indexed_by< N(byproposal), const_mem_fun<rewardhistor, uint64_t, &rewardhistor::get_proposal >>
     > rewardstbl;
 
     // period rewards table

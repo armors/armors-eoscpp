@@ -13,11 +13,14 @@ function _init_account()
   _open_un_lock_wallet
 
   _account_create 3 $developer_name
-  _account_create 3 dev.token
-
-  _account_create 6 test
-  _account_create 9 test.other
-
-  _account_create 6 call
-  _account_create 9 call.other
+  # system
+  _account_create 6 eosio.token
+  _account_create 9 eosio.msig
+  _account_create 12 eosio.bpay
+  _account_create 15 eosio.names
+  _account_create 18 eosio.ram
+  _account_create 21 eosio.ramfee
+  _account_create 24 eosio.saving
+  _account_create 27 eosio.stake
+  _account_create 30 eosio.vpay
 }

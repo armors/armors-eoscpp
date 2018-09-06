@@ -20,6 +20,9 @@ function _wallet_create()
 
     key_create
     key_create
+    key_create
+    key_create
+    key_create
 
     run_cmd "sh eos.sh cli 'wallet create -n $name' > $project_docker_persistent_dir/wallets/${name}.password"
     run_cmd "sh eos.sh cli 'wallet import -n $name --private-key 5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3'"
@@ -29,6 +32,13 @@ function _wallet_create()
     _wallet_import 8
     _wallet_import 11
     _wallet_import 14
+
+    _wallet_import 17
+    _wallet_import 20
+    _wallet_import 23
+    _wallet_import 26
+    _wallet_import 29
+
 
   fi
 }
@@ -41,6 +51,13 @@ function _wallet_import()
 
   run_cmd "sh eos.sh cli 'wallet import -n $name --private-key $key'"
 }
+
+function wallet_import()
+{
+    local line=$2
+    _wallet_import $line
+}
+
 
 function _get_private_key()
 {
