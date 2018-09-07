@@ -51,6 +51,7 @@ class everipediaiq : public contract {
      symbol_type IQSYMBOL = eosio::symbol_type(eosio::string_to_symbol(3, "IQ"));
      const int64_t IQ_PRECISION_MULTIPLIER = 1000;
 
+     ///@abi table accounts i64
      struct account {
         asset    balance;
 
