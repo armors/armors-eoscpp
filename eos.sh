@@ -18,13 +18,13 @@ source $project_docker_path/bash.sh                                 # 基础函�
 developer_name=$('whoami');                                         # 开发者
 
 
-app_basic_name=smart-contract
-app="$developer_name-$app_basic_name"
+app_basic_name=eos-dev
+app="$app_basic_name-$developer_name"
 
 eosio_image=hoseadevops/eos-dev:$VERSION
 
 # container
-eosio_container=$app-eosio
+eosio_container=$app
 
 # container dir
 project_eosio_dir="$project_docker_path/eos"
@@ -41,11 +41,15 @@ source $project_docker_path/eosio/contract.sh
 
 function init()
 {
+    recursive_mkdir "$project_docker_persistent_dir/nodeos"
+
     recursive_mkdir "$project_docker_persistent_dir/keosd"
 
     echo wallet_dir=$project_docker_persistent_dir/wallets > $project_docker_persistent_dir/config
 
-    run_cmd "replace_template_key_value $project_docker_persistent_dir/config $project_docker_eosio_dir/conf/config.ini $project_docker_persistent_dir/keosd/config.ini"
+    run_cmd "replace_template_key_value $project_docker_persistent_dir/config $project_docker_eosio_dir/conf/nodeos.ini $project_docker_persistent_dir/nodeos/config.ini"
+
+    run_cmd "replace_template_key_value $project_docker_persistent_dir/config $project_docker_eosio_dir/conf/keosd.ini $project_docker_persistent_dir/keosd/config.ini"
 }
 
 function run()
@@ -53,10 +57,10 @@ function run()
     init
     run_eosio
 
-    _wallet_create
-    _init_account
-
-    _init_contract
+#    _wallet_create
+#    _init_account
+#
+#    _init_contract
 }
 
 function restart()
@@ -83,6 +87,7 @@ function clean_persistent()
 {
   run_cmd "rm -f $project_docker_persistent_dir/config"
   run_cmd "rm -rf $project_docker_persistent_dir/keosd"
+  run_cmd "rm -rf $project_docker_persistent_dir/nodeos"
   run_cmd "rm -rf $project_docker_persistent_dir/contracts"
 }
 
