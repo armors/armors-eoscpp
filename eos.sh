@@ -2,19 +2,26 @@
 
 set -e
 
+function read_kv_config()
+{
+    local file=$1
+    local key=$2
+    cat $file | grep "$key=" | awk -F '=' '{print $2}'
+}
+
+NODEOS_PORT=$(read_kv_config .env NODEOS_PORT)
+VERSION=$(read_kv_config .env VERSION)
+
 project_path=$(cd $(dirname $0); pwd -P)                            # 项目目录
-project_docker_path="$project_path/docker"                          # 项目docker目录
+project_docker_path="$project_path/docker-$VERSION"                 # 项目docker目录
 source $project_docker_path/bash.sh                                 # 基础函数
 developer_name=$('whoami');                                         # 开发者
 
 
-NODEOS_PORT=$(read_kv_config .env NODEOS_PORT)
-
 app_basic_name=smart-contract
 app="$developer_name-$app_basic_name"
 
-#eosio_image=eosio/eos-dev:v1.1.1
-eosio_image=hoseadevops/eos-dev:v1.3.0
+eosio_image=hoseadevops/eos-dev:$VERSION
 
 # container
 eosio_container=$app-eosio

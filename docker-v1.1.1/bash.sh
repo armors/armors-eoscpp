@@ -84,16 +84,6 @@ function updateHost()
     fi
 }
 
-#--------------------------------------------
-# 读取 文件中 key=value 的value
-#
-# demo: read_kv_config .env APP_NAME
-function read_kv_config()
-{
-    local file=$1
-    local key=$2
-    cat $file | grep "$key=" | awk -F '=' '{print $2}'
-}
 
 #--------------------------------------------
 # 模板变量替换 生成新文件 适用于配置中心
