@@ -57,10 +57,10 @@ function run()
     init
     run_eosio
 
-#    _wallet_create
-#    _init_account
-#
-#    _init_contract
+    _wallet_create
+    _init_account
+
+    _init_contract
 }
 
 function restart()
@@ -107,14 +107,14 @@ cat <<EOF
         cli
 
         open_unlock_wallet
+        key_create
+
         deploy
 
-        key_create
-        wallet_import
 EOF
 }
 
 action=${1:-help}
-ALL_COMMANDS="run restart clean cpp cli deploy key_create send_cmd_to_eos_container open_unlock_wallet key_create wallet_import"
+ALL_COMMANDS="run restart clean cpp cli deploy key_create send_cmd_to_eos_container open_unlock_wallet key_create get_keosd_ip"
 list_contains ALL_COMMANDS "$action" || action=help
 $action "$@"

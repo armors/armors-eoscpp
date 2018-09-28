@@ -48,7 +48,7 @@ function run_keosd()
 
     args="$args -w $project_path"
 
-    args="$args -v $project_docker_persistent_dir/keosd:/mnt/dev/keosd/config"
+    args="$args -v $project_docker_persistent_dir/keosd:/root/eosio-wallet"
 
     run_cmd "docker run -d $args --name keosd-$eosio_container $eosio_image /bin/bash -c 'keosd --http-server-address=0.0.0.0:9876'"
 }
@@ -74,7 +74,9 @@ function cpp()
 
 get_keosd_ip()
 {
-    echo '172.18.0.3';
+    local ip_keosd
+    ip_keosd=`docker inspect --format='{{.NetworkSettings.Networks.eosdev.IPAddress}}' keosd-$eosio_container`
+    echo ${ip_keosd};
 }
 
 function cli()

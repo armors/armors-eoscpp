@@ -12,15 +12,15 @@ function _init_account()
 {
   _open_un_lock_wallet
 
-  _account_create 3 $developer_name
+  _account_create 2 $developer_name
   # system
-  _account_create 6 eosio.token
-  _account_create 9 eosio.msig
-  _account_create 12 eosio.bpay
-  _account_create 15 eosio.names
-  _account_create 18 eosio.ram
-  _account_create 21 eosio.ramfee
-  _account_create 24 eosio.saving
-  _account_create 27 eosio.stake
-  _account_create 30 eosio.vpay
+  _account_create 4 eosio.token
+  _account_create 6 eosio.msig
+  _account_create 8 eosio.bpay
+  _account_create 10 eosio.names
+  _account_create 12 eosio.ram
+  _account_create 14 eosio.ramfee
+  _account_create 16 eosio.saving
+  _account_create 18 eosio.stake
+  _account_create 20 eosio.vpay
 }
