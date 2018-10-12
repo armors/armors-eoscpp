@@ -32,5 +32,6 @@ function _deploy()
   fi
   run_cmd "sh eos.sh cpp 'contracts/$contract' '-g $contract.abi $contract.cpp'"
   run_cmd "sh eos.sh cpp 'contracts/$contract' '-o $contract.wast $contract.cpp'"
+  _open_un_lock_wallet
   run_cmd "sh eos.sh cli 'set contract $developer_name $contract_dir -x 1000s -p $developer_name@active'"
 }
