@@ -2,14 +2,13 @@
 
 using namespace eosio;
 
-class hello : public eosio::contract {
+CONTRACT hello : public eosio::contract {
   public:
       using contract::contract;
 
-      /// @abi action 
-      void hi( account_name user ) {
+      ACTION hi( name user ) {
          print( "Hello, ", name{user} );
       }
 };
 
-EOSIO_ABI( hello, (hi) )
+EOSIO_DISPATCH( hello, (hi) )
