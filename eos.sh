@@ -13,7 +13,7 @@ NODEOS_PORT=$(read_kv_config .env NODEOS_PORT)
 VERSION=$(read_kv_config .env VERSION)
 
 project_path=$(cd $(dirname $0); pwd -P)                            # 项目目录
-project_docker_path="$project_path/docker-$VERSION"                 # 项目docker目录
+project_docker_path="$project_path/docker"                          # 项目docker目录
 source $project_docker_path/bash.sh                                 # 基础函数
 developer_name=$('whoami');                                         # 开发者
 
@@ -21,13 +21,12 @@ developer_name=$('whoami');                                         # 开发者
 app_basic_name=eos-dev
 app="$app_basic_name-$developer_name"
 
-eosio_image=hoseadevops/eos-dev:$VERSION
+eosio_image=eosio/eos:$VERSION
 
 # container
 eosio_container=$app
 
 # container dir
-project_eosio_dir="$project_docker_path/eos"
 project_docker_eosio_dir="$project_docker_path/eosio"
 
 project_docker_runtime_dir="$project_docker_path/runtime"           # app runtime
