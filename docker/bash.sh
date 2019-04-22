@@ -9,9 +9,8 @@ CYAN='\033[0;36m' # Info Color
 #
 # demo： run_cmd "mkdir -p $1"
 #--------------------------------------------
-function run_cmd()
-{
-    local t=`date`
+function run_cmd() {
+    local t=$(date)
     echo "$t: $1"
     eval $1
 }
@@ -21,8 +20,7 @@ function run_cmd()
 #
 # demo： recursive_mkdir "/opt/data/hosea"
 #--------------------------------------------
-function recursive_mkdir()
-{
+function recursive_mkdir() {
     if [ ! -d $1 ]; then
         run_cmd "mkdir -p $1"
     fi
@@ -34,18 +32,15 @@ function recursive_mkdir()
 # demo： recursive_mkdir_with_file "/opt/data/hosea/a.txt"
 #--------------------------------------------
 
-function recursive_mkdir_with_file()
-{
+function recursive_mkdir_with_file() {
     recursive_mkdir $(dirname $1)
 }
-
 
 #--------------------------------------------
 # 列出包含的命令
 #
 #--------------------------------------------
-function list_contains()
-{
+function list_contains() {
     local var="$1"
     local str="$2"
     local val
@@ -58,15 +53,13 @@ function list_contains()
 # 修改host
 # sh docker.sh updateHost www.baidu.com 127.0.0.1
 #--------------------------------------------
-function updateHost()
-{
+function updateHost() {
     local in_url="$2"
     local in_ip="$3"
 
     # 域名下的IP
-    inner_host=`cat /etc/hosts | grep ${in_url} | awk '{print $1}'`
-    if [[ ${inner_host} = ${in_ip} ]];
-    then
+    inner_host=$(cat /etc/hosts | grep ${in_url} | awk '{print $1}')
+    if [[ ${inner_host} == ${in_ip} ]]; then
         echo "${inner_host}  ${in_url} ok, do nothing."
     else
         # 替换 http://man.linuxde.net/sed
@@ -79,19 +72,17 @@ function updateHost()
         # echo ${inner_ip_map}|sudo tee -a /etc/hosts
 
         if [ $? = 0 ]; then
-           echo "${inner_ip_map} to hosts success host is `cat /etc/hosts`"
+            echo "${inner_ip_map} to hosts success host is $(cat /etc/hosts)"
         fi
     fi
 }
-
 
 #--------------------------------------------
 # 模板变量替换 生成新文件 适用于配置中心
 #
 # demo: render_local_config $config_key $prj_dir/9douyu-core/.env.example $config_file $prj_dir/9douyu-core/.env
 #--------------------------------------------
-function render_local_config()
-{
+function render_local_config() {
     local config_key=$1
     local template_file=$2
     local config_file=$3
@@ -104,8 +95,7 @@ function render_local_config()
 
     local config_type=yaml
     cmd="curl -s -F 'template_file=@$template_file' -F 'config_file=@$config_file' -F 'config_key=$config_key' -F 'config_type=$config_type'"
-    for kv in $*
-    do
+    for kv in $*; do
         cmd="$cmd -F 'kv_list[]=$kv'"
     done
     cmd="$cmd $CONFIG_SERVER/render-config > $out"
@@ -113,15 +103,12 @@ function render_local_config()
     head $out && echo
 }
 
-
-
 #--------------------------------------------
 # 删除容器
 #
 # demo: rm_container "container_name"
 #--------------------------------------------
-function rm_container()
-{
+function rm_container() {
     local container_name=$1
     local cmd="docker ps -a -f name='^/$container_name$' | grep '$container_name' | awk '{print \$1}' | xargs -I {} docker rm -f --volumes {}"
     run_cmd "$cmd"
@@ -131,8 +118,7 @@ function rm_container()
 # 构建容器
 #
 #--------------------------------------------
-function build_image()
-{
+function build_image() {
     local docker_image=$1
     local docker_file_dir=$2
     docker build -t $docker_image $docker_file_dir
@@ -143,8 +129,7 @@ function build_image()
 #
 # demo: container_is_running "container_name"
 #--------------------------------------------
-function container_is_running()
-{
+function container_is_running() {
     local container_name=$1
     local num=$(docker ps -a -f name="^/$container_name$" -q | wc -l)
     if [ "$num" == "1" ]; then
@@ -160,8 +145,7 @@ function container_is_running()
 #
 # demo: sh docker.sh push_sunfund_image 9dy-php:5.6.8-fpm
 #--------------------------------------------
-function push_sunfund_image()
-{
+function push_sunfund_image() {
     local image_name=$2
     local user_image="hoseadevops/sunfund-$image_name"
     run_cmd "docker tag docker.sunfund.com/$image_name $user_image"
@@ -173,8 +157,7 @@ function push_sunfund_image()
 #
 # demo: sh docker.sh pull_sunfund_image 9dy-php:5.6.8-fpm
 #--------------------------------------------
-function pull_sunfund_image()
-{
+function pull_sunfund_image() {
     local image_name=$2
     local url=docker.sunfund.com/$image_name
     run_cmd "docker pull $url"
@@ -185,8 +168,7 @@ function pull_sunfund_image()
 #
 # demo: sh docker.sh push_image
 #--------------------------------------------
-function push_image()
-{
+function push_image() {
     local image_name=$2
     local user_image="hoseadevops/own-$image_name"
     run_cmd "docker tag $image_name $user_image"
@@ -196,9 +178,8 @@ function push_image()
 #--------------------------------------------
 # docker0 ip
 #--------------------------------------------
-function docker0_ip()
-{
-    local host_ip=$(ip addr show docker0 | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1' | awk '{print $1}' | head  -1)
+function docker0_ip() {
+    local host_ip=$(ip addr show docker0 | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1' | awk '{print $1}' | head -1)
     echo $host_ip
 }
 
@@ -206,50 +187,31 @@ function docker0_ip()
 # 通过key=value的配置文件 替换 模板中的 $val 变量; 不适合模板中有$符号的 非替换字符串
 # replace_template config.file template.file out.file
 #--------------------------------------------
-function replace_template()
-{
-    local config=`cat $1`
-    local template=`cat $2`
+function replace_template() {
+    local config=$(cat $1)
+    local template=$(cat $2)
     local out=$3
 
-    printf "$config\ncat << EOF\n$template\nEOF" | bash > $out
+    printf "$config\ncat << EOF\n$template\nEOF" | bash >$out
 }
 #--------------------------------------------
 # 批量替换配置 sed 多个变量替换
 # replace_template_key_value config.file template.file out.file
 #--------------------------------------------
-function replace_template_key_value()
-{
+function replace_template_key_value() {
     local config=$1
     local template=$2
     local out=$3
 
     cmd="sed '"
     sub_cmd=""
-    for kv in `cat $config`
-    do
-        key=$(echo $kv| awk -F '=' '{print $1}')
-        val=$(echo $kv| awk -F '=' '{print $2}')
+    for kv in $(cat $config); do
+        key=$(echo $kv | awk -F '=' '{print $1}')
+        val=$(echo $kv | awk -F '=' '{print $2}')
 
-        sub_cmd=$sub_cmd"s|{{ $key }}|$val|g;";
+        sub_cmd=$sub_cmd"s|{{ $key }}|$val|g;"
     done
     sub_cmd="${sub_cmd%?}'"
 
-    run_cmd "$cmd$sub_cmd $template > $out";
+    run_cmd "$cmd$sub_cmd $template > $out"
 }
-
-
-#--------------------------------------------
-# 变量扩展 默认值类用法
-#
-# ${parameter-word} 若parameter变量未定义，则扩展为word。
-# ${parameter:-word} 若parameter变量未定义或为空，则扩展为word。
-#--------------------------------------------
-#if [ "$action" = 'init' ]; then
-#    if [ $# -lt 1 ]; then
-#        echo "Usage sh $0 init";
-#        exit 1
-#    fi
-#    init
-#    exit 0
-#fi
