@@ -12,10 +12,10 @@ function read_kv_config()
 NODEOS_PORT=$(read_kv_config .env NODEOS_PORT)
 VERSION=$(read_kv_config .env VERSION)
 
-project_path=$(cd $(dirname $0); pwd -P)                            # 项目目录
-project_docker_path="$project_path/docker"                          # 项目docker目录
-source $project_docker_path/bash.sh                                 # 基础函数
-developer_name=$('whoami');                                         # 开发者
+project_path=$(cd $(dirname $0); pwd -P)
+project_docker_path="$project_path/docker"
+source $project_docker_path/bash.sh
+developer_name=$('whoami');
 
 
 app_basic_name=eos-dev
@@ -29,8 +29,8 @@ eosio_container=$app
 # container dir
 project_docker_eosio_dir="$project_docker_path/eosio"
 
-project_docker_runtime_dir="$project_docker_path/runtime"           # app runtime
-project_docker_persistent_dir="$project_docker_path/persistent"     # app persistent
+project_docker_runtime_dir="$project_docker_path/runtime"
+project_docker_persistent_dir="$project_docker_path/persistent"   
 
 #---------- eosio container ------------#
 source $project_docker_path/eosio/container.sh
